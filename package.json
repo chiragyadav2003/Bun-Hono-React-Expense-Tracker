@@ -2,6 +2,10 @@
   "name": "bun-hono-react-expense-tracker",
   "module": "index.ts",
   "type": "module",
+  "scripts": {
+    "start": "bun index.ts",
+    "dev": " bun --watch index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
