@@ -29,7 +29,32 @@ expensesRoute.get("/", (c) => {
 expensesRoute.post("/", zValidator('json', createPostSchema), async (c) => {
     const expense = await c.req.valid('json');
     fakeExpenses.push({ ...expense, id: fakeExpenses.length + 1 })
-    return c.json(expense, 201)
+    return c.json({ msg: "Expense ceated successfully", expense }, 201)
+})
+
+// regex {[0-9]+} ensures that id entered is integer
+expensesRoute.get("/:id{[0-9]+}", async (c) => {
+    //id is of type string so we need to change it to number
+    const id = Number.parseInt(c.req.param('id'));
+    const expense = fakeExpenses.find(expense => expense.id === id);
+    if (!expense) {
+        return c.notFound()
+    }
+    return c.json({ expense }, 201)
+})
+
+expensesRoute.delete("/:id{[0-9]+}", async (c) => {
+    //id is of type string so we need to change it to number
+    const id = Number.parseInt(c.req.param('id'));
+    const expenseIndex = fakeExpenses.findIndex(expense => expense.id === id);
+    if (expenseIndex == -1) {
+        return c.notFound()
+    }
+
+    //1st parameter in index , 2nd parameter means remove one item only
+    const deleteExpense = fakeExpenses.splice(expenseIndex, 1)
+
+    return c.json({ msg: "expense deleted successfully", deleteExpense }, 202)
 })
 
 
