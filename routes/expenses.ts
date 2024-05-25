@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { zValidator } from '@hono/zod-validator';
 import { z } from "zod";
 
 
@@ -24,11 +25,11 @@ expensesRoute.get("/", (c) => {
     return c.json(fakeExpenses);
 })
 
-expensesRoute.post("/", async (c) => {
-    const data = await c.req.json();
-    const expense = createPostSchema.parse(data);
-    console.log(expense);
-    return c.json(expense);
+//here zValidator will validate incoming request 'json' data as per createPostSchema validation
+expensesRoute.post("/", zValidator('json', createPostSchema), async (c) => {
+    const expense = await c.req.valid('json');
+    fakeExpenses.push({ ...expense, id: fakeExpenses.length + 1 })
+    return c.json(expense, 201)
 })
 
 
