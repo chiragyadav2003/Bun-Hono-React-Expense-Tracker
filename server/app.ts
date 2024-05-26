@@ -3,7 +3,7 @@ import { logger } from "hono/logger";
 
 import expensesRoute from './routes/expenses.ts';
 
-const app = new Hono();
+const app = new Hono().basePath('/api');
 app.use('*', logger());
 
 app.get("/", (c) => {
