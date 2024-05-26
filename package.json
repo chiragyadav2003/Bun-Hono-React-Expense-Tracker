@@ -4,10 +4,12 @@
   "type": "module",
   "scripts": {
     "start": "bun server/index.ts",
-    "dev": " bun --watch server/index.ts"
+    "dev": " bun --watch server/index.ts",
+    "wranglerDeploy": "wrangler deploy --minify --name hono-bun-expense-api server/app.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "wrangler": "^3.57.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
