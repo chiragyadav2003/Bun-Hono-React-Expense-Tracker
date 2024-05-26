@@ -42,6 +42,12 @@ expensesRoute.get("/:id{[0-9]+}", async (c) => {
     return c.json({ expense }, 201)
 })
 
+//total expense
+expensesRoute.get('total-expenses', (c) => {
+    const total = fakeExpenses.reduce((acc, expense) => acc + expense.amount, 0)
+    return c.json({ total })
+})
+
 expensesRoute.delete("/:id{[0-9]+}", async (c) => {
     //id is of type string so we need to change it to number
     const id = Number.parseInt(c.req.param('id'));
