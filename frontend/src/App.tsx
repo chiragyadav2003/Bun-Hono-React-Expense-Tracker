@@ -7,13 +7,15 @@ import {
 } from "@/components/ui/card"
 import { useEffect, useState } from "react";
 
-function App() {
+import { api } from "@/lib/api.ts";
 
+function App() {
   const [totalSpent, setTotalSpent] = useState(0);
 
   useEffect(() => {
     async function getToalExpense() {
-      const res = await fetch("/api/expenses/total-expenses");
+      //make a get request with Hono RPC using client
+      const res = await api.expenses['total-expenses'].$get();
       const data = await res.json();
       setTotalSpent(data.total)
     }
