@@ -13,13 +13,13 @@ function App() {
   const [totalSpent, setTotalSpent] = useState(0);
 
   useEffect(() => {
-    async function getToalExpense() {
+    async function getTotalSpent() {
       //make a get request with Hono RPC using client
-      const res = await api.expenses['total-expenses'].$get();
+      const res = await api.expenses['total-spent'].$get();
       const data = await res.json();
       setTotalSpent(data.total)
     }
-    getToalExpense()
+    getTotalSpent()
   }, [totalSpent])
 
   return (
