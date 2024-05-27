@@ -22,7 +22,7 @@ const fakeExpenses: Expenses[] = [
 
 const expensesRoute = new Hono()
     .get("/", (c) => {
-        return c.json(fakeExpenses);
+        return c.json({ expenses: fakeExpenses });
     })
     //here zValidator will validate incoming request 'json' data as per createPostSchema validation
     .post("/", zValidator('json', createPostSchema), async (c) => {
