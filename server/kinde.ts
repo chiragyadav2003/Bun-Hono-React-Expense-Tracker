@@ -1,7 +1,8 @@
-import { createKindeServerClient, GrantType, type SessionManager } from "@kinde-oss/kinde-typescript-sdk";
+import { createKindeServerClient, GrantType, type SessionManager, type UserType } from "@kinde-oss/kinde-typescript-sdk";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { type Context } from "hono";
 //type context is to access 'c' object in the session manager
+import { createMiddleware } from 'hono/factory';
 
 // Client for authorization code flow
 export const kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
@@ -47,3 +48,28 @@ export const sessionManager = (c: Context): SessionManager => ({
         });
     },
 });
+
+
+//----------------auth middleware-----------------
+// for authenticatcated user we will get the user profile as passed from middleware
+type Env = {
+    Variables: {
+        user: UserType;
+    }
+}
+// add Env to the middleware which will give access to "user" type variable
+export const getUser = createMiddleware<Env>(async (c, next) => {
+    try {
+        const manager = sessionManager(c);
+        const isAuthenticated = await kindeClient.isAuthenticated(manager);
+        if (!isAuthenticated) {
+            return c.json({ error: "Unauthorized" }, 401)
+        }
+        const user = await kindeClient.getUserProfile(manager);
+        c.set("user", user);
+        await next();
+    } catch (error) {
+        console.error(error);
+        return c.json({ error: "Unauthorized" }, 401)
+    }
+})
