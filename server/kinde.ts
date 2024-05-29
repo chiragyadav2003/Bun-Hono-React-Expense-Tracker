@@ -1,6 +1,7 @@
 import { createKindeServerClient, GrantType, type SessionManager } from "@kinde-oss/kinde-typescript-sdk";
-import { type Context } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
+import { type Context } from "hono";
+//type context is to access 'c' object in the session manager
 
 // Client for authorization code flow
 export const kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
