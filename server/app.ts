@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { logger } from "hono/logger";
-import expensesRoute from './routes/expenses.ts';
-import authRoutes from './routes/auth.ts';
+import { expensesRoute } from './routes/expenses.ts';
+import { authRoute } from './routes/auth.ts';
 
 const app = new Hono();
 app.use('*', logger());
@@ -10,7 +10,7 @@ app.use('*', logger());
 //routing expense requests to expense route
 const apiRoutes = app.basePath("/api")
     .route("/expenses", expensesRoute)
-    .route("/", authRoutes);
+    .route("/", authRoute);
 
 //exporting api routes type
 export type ApiRoutes = typeof apiRoutes;
