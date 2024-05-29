@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { type QueryClient } from '@tanstack/react-query';
 
 interface MyRouterContext {
-    queryClient: QueryClient
+    queryClient: QueryClient //specifying the context type which will be passed to the router context 
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
