@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { z } from "zod";
+import { getUser } from "../kinde.ts";
 
 const ExpenseSchema = z.object({
     id: z.number().int().positive().min(1),
@@ -21,17 +22,17 @@ const fakeExpenses: Expenses[] = [
 
 
 const expensesRoute = new Hono()
-    .get("/", (c) => {
+    .get("/", getUser, (c) => {
         return c.json({ expenses: fakeExpenses });
     })
     //here zValidator will validate incoming request 'json' data as per createPostSchema validation
-    .post("/", zValidator('json', createPostSchema), async (c) => {
+    .post("/", getUser, zValidator('json', createPostSchema), async (c) => {
         const expense = await c.req.valid('json');
         fakeExpenses.push({ ...expense, id: fakeExpenses.length + 1 })
         return c.json({ msg: "Expense ceated successfully", expense }, 201)
     })
     // regex {[0-9]+} ensures that id entered is integer
-    .get("/:id{[0-9]+}", async (c) => {
+    .get("/:id{[0-9]+}", getUser, async (c) => {
         //id is of type string so we need to change it to number
         const id = Number.parseInt(c.req.param('id'));
         const expense = fakeExpenses.find(expense => expense.id === id);
@@ -41,11 +42,11 @@ const expensesRoute = new Hono()
         return c.json({ expense }, 201)
     })
     //total expense
-    .get('total-spent', (c) => {
+    .get('total-spent', getUser, (c) => {
         const total = fakeExpenses.reduce((acc, expense) => acc + expense.amount, 0)
         return c.json({ total })
     })
-    .delete("/:id{[0-9]+}", async (c) => {
+    .delete("/:id{[0-9]+}", getUser, async (c) => {
         //id is of type string so we need to change it to number
         const id = Number.parseInt(c.req.param('id'));
         const expenseIndex = fakeExpenses.findIndex(expense => expense.id === id);
