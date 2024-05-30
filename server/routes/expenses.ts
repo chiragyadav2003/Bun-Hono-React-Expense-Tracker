@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator';
 import { createExpenseSchema } from '../sharedTypes.ts';
 import { getUser } from "../kinde.ts";
 
-import { expenses as expensesTable } from "../db/schema/expenses.ts";
+import { expenses as expensesTable, insertExpenseSchema } from "../db/schema/expenses.ts";
 import { db } from "../db/index.ts";
 import { eq, desc, sum, and } from 'drizzle-orm';
 
@@ -24,10 +24,16 @@ const expensesRoute = new Hono()
     .post("/", getUser, zValidator('json', createExpenseSchema), async (c) => {
         const expense = await c.req.valid('json');
         const user = c.var.user;
-        const res = await db.insert(expensesTable).values({
+
+        const validatedExpense = insertExpenseSchema.parse({
             ...expense,
             userId: user.id,
-        }).returning()
+        })
+        const res = await db
+            .insert(expensesTable)
+            .values(validatedExpense)
+            .returning()
+
         return c.json({ msg: "Expense ceated successfully", res }, 201)
     })
     // regex {[0-9]+} ensures that id entered is integer

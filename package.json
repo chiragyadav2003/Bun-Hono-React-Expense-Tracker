@@ -22,6 +22,7 @@
     "@kinde-oss/kinde-typescript-sdk": "^2.9.1",
     "@neondatabase/serverless": "^0.9.3",
     "drizzle-orm": "^0.30.10",
+    "drizzle-zod": "^0.5.1",
     "hono": "^4.3.11",
     "zod": "^3.23.8"
   }
