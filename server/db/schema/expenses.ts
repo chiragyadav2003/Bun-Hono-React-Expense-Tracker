@@ -1,4 +1,4 @@
-import { text, numeric, pgTable, serial, index } from 'drizzle-orm/pg-core';
+import { text, timestamp, numeric, pgTable, serial, index } from 'drizzle-orm/pg-core';
 
 
 
@@ -7,6 +7,7 @@ export const expenses = pgTable('expenses', {
     userId: text('user_id').notNull(),
     title: text('title').notNull(),
     amount: numeric('amount', { precision: 12, scale: 2 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
     //create index on the baseis of userId
 }, (expenses) => {
     return {
