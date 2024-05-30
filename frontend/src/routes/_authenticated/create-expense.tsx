@@ -3,11 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useForm } from '@tanstack/react-form';
-
 import { zodValidator } from '@tanstack/zod-form-adapter';
-import { z } from 'zod';
-
 import { api } from '@/lib/api';
+import { createExpenseSchema } from '@server/sharedTypes.ts';
 
 
 export const Route = createFileRoute('/_authenticated/create-expense')({
@@ -51,7 +49,7 @@ function CreateExpenses() {
         <form.Field
           name="title"
           validators={{
-            onChange: z.string().min(3, { message: 'Title must be at least 3 characters' }),
+            onChange: createExpenseSchema.shape.title,
           }}
           children={(field) => (
             <>
@@ -70,6 +68,9 @@ function CreateExpenses() {
         />
         <form.Field
           name="amount"
+          validators={{
+            onChange: createExpenseSchema.shape.amount,
+          }}
           children={(field) => (
             <>
               <Label htmlFor={field.name}>Amount</Label>

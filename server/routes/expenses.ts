@@ -1,24 +1,12 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { z } from "zod";
-
+import { createExpenseSchema } from '../sharedTypes.ts';
 import { getUser } from "../kinde.ts";
 
 import { expenses as expensesTable } from "../db/schema/expenses.ts";
 import { db } from "../db/index.ts";
 import { eq, desc, sum, and } from 'drizzle-orm';
 
-
-const ExpenseSchema = z.object({
-    id: z.number().int().positive().min(1),
-    title: z.string().min(3).max(100),
-    amount: z.string()
-})
-
-type Expenses = z.infer<typeof ExpenseSchema>
-
-//in createPostSchema we do not require id so omit it
-const createPostSchema = ExpenseSchema.omit({ id: true })
 
 const expensesRoute = new Hono()
     // get all expenses information
@@ -33,7 +21,7 @@ const expensesRoute = new Hono()
         return c.json({ expenses: expenses });
     })
     //here zValidator will validate incoming request 'json' data as per createPostSchema validation
-    .post("/", getUser, zValidator('json', createPostSchema), async (c) => {
+    .post("/", getUser, zValidator('json', createExpenseSchema), async (c) => {
         const expense = await c.req.valid('json');
         const user = c.var.user;
         const res = await db.insert(expensesTable).values({
