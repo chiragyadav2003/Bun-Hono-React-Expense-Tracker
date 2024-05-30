@@ -4,6 +4,9 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useForm } from '@tanstack/react-form';
 
+import { zodValidator } from '@tanstack/zod-form-adapter';
+import { z } from 'zod';
+
 import { api } from '@/lib/api';
 
 
@@ -15,6 +18,7 @@ function CreateExpenses() {
   const navigate = useNavigate();
 
   const form = useForm({
+    validatorAdapter: zodValidator,
     defaultValues: {
       title: '',
       amount: "0"
@@ -46,6 +50,9 @@ function CreateExpenses() {
       >
         <form.Field
           name="title"
+          validators={{
+            onChange: z.string().min(3, { message: 'Title must be at least 3 characters' }),
+          }}
           children={(field) => (
             <>
               <Label htmlFor={field.name}>Title</Label>
@@ -55,6 +62,9 @@ function CreateExpenses() {
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              {field.state.meta.errors ? (
+                <em role="alert">{field.state.meta.errors.join(', ')}</em>
+              ) : null}
             </>
           )}
         />
@@ -69,6 +79,9 @@ function CreateExpenses() {
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
               />
+              {field.state.meta.errors ? (
+                <em role="alert">{field.state.meta.errors.join(', ')}</em>
+              ) : null}
             </>
           )}
         />

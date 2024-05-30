@@ -17,13 +17,15 @@
     "@tanstack/react-router": "^1.34.3",
     "@tanstack/router-devtools": "^1.34.4",
     "@tanstack/router-vite-plugin": "^1.34.1",
+    "@tanstack/zod-form-adapter": "^0.20.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.379.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.12.12",
