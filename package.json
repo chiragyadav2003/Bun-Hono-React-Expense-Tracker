@@ -5,7 +5,9 @@
   "scripts": {
     "start": "bun server/index.ts",
     "dev": " bun --watch server/index.ts",
-    "wranglerDeploy": "wrangler deploy --minify --name hono-bun-expense-api server/app.ts"
+    "wranglerDeploy": "wrangler deploy --minify --name hono-bun-expense-api server/app.ts",
+    "generateMigration": "bun drizzle-kit generate",
+    "runMigration": "bun ./migrate.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
