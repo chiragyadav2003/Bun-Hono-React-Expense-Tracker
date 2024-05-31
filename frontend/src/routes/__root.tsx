@@ -12,22 +12,24 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function NavBar() {
     return (
-        <div className="p-2 flex gap-2">
-            <Link to="/about" className="[&.active]:font-bold">
-                About
+        <div className='flex justify-between p-2 max-w-2xl m-auto items-baseline'>
+            <Link to="/" className=' text-3xl font-bold bg-gradient-to-br from-red-200 to-orange-400 p-1 rounded-lg text-transparent bg-clip-text'>
+                ExpenseTracker
             </Link>
-            <Link to="/" className="[&.active]:font-bold">
-                Home
-            </Link>{' '}
-            <Link to="/expenses" className="[&.active]:font-bold">
-                Expenses
-            </Link>
-            <Link to="/create-expense" className="[&.active]:font-bold">
-                Create
-            </Link>
-            <Link to="/profile" className="[&.active]:font-bold">
-                Profile
-            </Link>
+            <div className=" flex gap-x-4 m-auto">
+                <Link to="/about" className="[&.active]:font-bold">
+                    About
+                </Link>
+                <Link to="/expenses" className="[&.active]:font-bold">
+                    Expenses
+                </Link>
+                <Link to="/create-expense" className="[&.active]:font-bold">
+                    Create
+                </Link>
+                <Link to="/profile" className="[&.active]:font-bold">
+                    Profile
+                </Link>
+            </div>
         </div>
     )
 }
@@ -37,7 +39,9 @@ function Root() {
         <>
             <NavBar />
             <hr />
-            <Outlet />
+            <div className="p-2 max-w-2xl m-auto">
+                <Outlet />
+            </div>
             <TanStackRouterDevtools />
         </>
     )

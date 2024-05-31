@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { userQueryOptions } from "@/lib/api";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute('/_authenticated')({
   //  context will pass down the queryClient to the beforeLoad function
@@ -20,7 +21,6 @@ export const Route = createFileRoute('/_authenticated')({
 function Component() {
   // get user info from created route context    
   const { user } = Route.useRouteContext();
-  console.log("@@user ", user)
   if (!user) {
     return <Login />
   }
@@ -32,8 +32,15 @@ function Component() {
 function Login() {
   return (
     <div>
-      <h1>You have to login</h1>
-      <a href="/api/login">Login</a>
+      <h1>You have to login or register</h1>
+      <div className="flex gap-x-10 items-start mt-6">
+        <Button asChild>
+          <a href="/api/login">Login</a>
+        </Button>
+        <Button asChild>
+          <a href="/api/register">Register</a>
+        </Button>
+      </div>
     </div>
   )
 }
