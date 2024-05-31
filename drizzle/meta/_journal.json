@@ -15,6 +15,13 @@
       "when": 1717079304212,
       "tag": "0001_clean_emma_frost",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1717139089050,
+      "tag": "0002_spooky_prima",
+      "breakpoints": true
     }
   ]
 }
