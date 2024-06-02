@@ -31,12 +31,15 @@ const expensesRoute = new Hono()
 			...expense,
 			userId: user.id,
 		});
+
+		//insert the expense into the database and return the inserted expense
 		const res = await db
 			.insert(expensesTable)
 			.values(validatedExpense)
-			.returning();
+			.returning()
+			.then((res) => res[0]);
 
-		return c.json({ msg: 'Expense ceated successfully', res }, 201);
+		return c.json(res, 201);
 	})
 	// regex {[0-9]+} ensures that id entered is integer
 	.get('/:id{[0-9]+}', getUser, async (c) => {

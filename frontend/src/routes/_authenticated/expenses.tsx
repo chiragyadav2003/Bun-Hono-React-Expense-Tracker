@@ -1,4 +1,4 @@
-import { api } from '@/lib/api';
+import { getAllExpensesQueryOptions } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
@@ -16,20 +16,8 @@ export const Route = createFileRoute('/_authenticated/expenses')({
 	component: Expenses,
 });
 
-async function getAllExpenses() {
-	const res = await api.expenses.$get();
-	if (!res.ok) {
-		throw new Error('Server error');
-	}
-	const data = await res.json();
-	return data;
-}
-
 function Expenses() {
-	const { isPending, data, error } = useQuery({
-		queryKey: ['get-all-expenses'],
-		queryFn: getAllExpenses,
-	});
+	const { isPending, data, error } = useQuery(getAllExpensesQueryOptions);
 
 	if (error) return 'An error has occured : ' + error.message;
 

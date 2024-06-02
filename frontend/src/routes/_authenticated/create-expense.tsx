@@ -5,8 +5,8 @@ import { Input } from '@/components/ui/input';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { Calendar } from '@/components/ui/calendar';
-
-import { api } from '@/lib/api';
+import { useQueryClient } from '@tanstack/react-query';
+import { api, getAllExpensesQueryOptions } from '@/lib/api';
 import { createExpenseSchema } from '@server/sharedTypes.ts';
 
 export const Route = createFileRoute('/_authenticated/create-expense')({
@@ -15,6 +15,7 @@ export const Route = createFileRoute('/_authenticated/create-expense')({
 
 function CreateExpenses() {
 	const navigate = useNavigate();
+	const queryClient = useQueryClient();
 
 	const form = useForm({
 		validatorAdapter: zodValidator,
@@ -24,13 +25,24 @@ function CreateExpenses() {
 			date: new Date().toISOString(),
 		},
 		onSubmit: async ({ value }) => {
-			// Do something with form data
+			//get existing expenses
+			const existingExpenses = await queryClient.ensureQueryData(
+				getAllExpensesQueryOptions
+			);
+
 			const res = await api.expenses.$post({ json: value });
 			if (!res.ok) {
 				throw new Error('Server error');
 			}
+			// newly created expense object
+			const newExpense = await res.json();
+			// set the new expense object in the cache so that it can be used in other components without refetching it using setQueryData
+			queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, {
+				...existingExpenses,
+				expenses: [newExpense, ...existingExpenses.expenses],
+			});
+
 			navigate({ to: '/expenses' });
-			console.log(value);
 		},
 	});
 
