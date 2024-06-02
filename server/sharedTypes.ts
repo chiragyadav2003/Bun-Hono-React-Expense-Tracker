@@ -1,7 +1,7 @@
-import { insertExpenseSchema } from "./db/schema/expenses.ts"
+import { insertExpenseSchema } from './db/schema/expenses.ts';
 
 export const createExpenseSchema = insertExpenseSchema.omit({
-    id: true,
-    userId: true,
-    createdAt: true
-})
+	id: true,
+	userId: true,
+	createdAt: true,
+});

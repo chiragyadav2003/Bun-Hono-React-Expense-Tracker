@@ -1,27 +1,27 @@
 {
-  "version": "6",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "6",
-      "when": 1717074171549,
-      "tag": "0000_broken_colleen_wing",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1717079304212,
-      "tag": "0001_clean_emma_frost",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1717139089050,
-      "tag": "0002_spooky_prima",
-      "breakpoints": true
-    }
-  ]
+	"version": "6",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "6",
+			"when": 1717074171549,
+			"tag": "0000_broken_colleen_wing",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1717079304212,
+			"tag": "0001_clean_emma_frost",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "6",
+			"when": 1717139089050,
+			"tag": "0002_spooky_prima",
+			"breakpoints": true
+		}
+	]
 }
