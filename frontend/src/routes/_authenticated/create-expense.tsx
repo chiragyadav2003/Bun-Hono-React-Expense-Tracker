@@ -25,17 +25,20 @@ function CreateExpenses() {
 			date: new Date().toISOString(),
 		},
 		onSubmit: async ({ value }) => {
-			//get existing expenses
+			//get existing expenses before creating a new one
 			const existingExpenses = await queryClient.ensureQueryData(
 				getAllExpensesQueryOptions
 			);
 
+			// create a new expense
 			const res = await api.expenses.$post({ json: value });
 			if (!res.ok) {
 				throw new Error('Server error');
 			}
+
 			// newly created expense object
 			const newExpense = await res.json();
+
 			// set the new expense object in the cache so that it can be used in other components without refetching it using setQueryData
 			queryClient.setQueryData(getAllExpensesQueryOptions.queryKey, {
 				...existingExpenses,
