@@ -19,10 +19,16 @@ export const Route = createFileRoute('/_authenticated/expenses')({
 function Expenses() {
 	const { isPending, data, error } = useQuery(getAllExpensesQueryOptions);
 
+	//handle loading state for create expense using the query key ['get-all-expenses'] which we've created in create-expense.tsx
+	const { data: loadingCreateExpense } = useQuery({
+		queryKey: ['loading-create-expense'],
+	})
+
 	if (error) return 'An error has occured : ' + error.message;
 
 	return (
 		<div className="p-2 max-w-3xl m-auto">
+			{JSON.stringify(loadingCreateExpense)}
 			<Table>
 				<TableCaption>A list of all your recent expenses.</TableCaption>
 				<TableHeader>
@@ -36,31 +42,31 @@ function Expenses() {
 				<TableBody>
 					{isPending
 						? Array(3)
-								.fill(0)
-								.map((_, i) => (
-									<TableRow key={i}>
-										<TableCell className="font-medium">
-											<Skeleton className="h-4" />
-										</TableCell>
-										<TableCell>
-											<Skeleton className="h-4" />
-										</TableCell>
-										<TableCell>
-											<Skeleton className="h-4" />
-										</TableCell>
-										<TableCell>
-											<Skeleton className="h-4" />
-										</TableCell>
-									</TableRow>
-								))
-						: data?.expenses.map((expense) => (
-								<TableRow key={expense.id}>
-									<TableCell className="font-medium">{expense.id}</TableCell>
-									<TableCell>{expense.title}</TableCell>
-									<TableCell>{expense.amount}</TableCell>
-									<TableCell>{expense.date}</TableCell>
+							.fill(0)
+							.map((_, i) => (
+								<TableRow key={i}>
+									<TableCell className="font-medium">
+										<Skeleton className="h-4" />
+									</TableCell>
+									<TableCell>
+										<Skeleton className="h-4" />
+									</TableCell>
+									<TableCell>
+										<Skeleton className="h-4" />
+									</TableCell>
+									<TableCell>
+										<Skeleton className="h-4" />
+									</TableCell>
 								</TableRow>
-							))}
+							))
+						: data?.expenses.map((expense) => (
+							<TableRow key={expense.id}>
+								<TableCell className="font-medium">{expense.id}</TableCell>
+								<TableCell>{expense.title}</TableCell>
+								<TableCell>{expense.amount}</TableCell>
+								<TableCell>{expense.date}</TableCell>
+							</TableRow>
+						))}
 				</TableBody>
 			</Table>
 		</div>

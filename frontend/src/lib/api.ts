@@ -1,6 +1,7 @@
 import { hc } from 'hono/client';
 import { type ApiRoutes } from '@server/app.ts';
 import { queryOptions } from '@tanstack/react-query';
+import { type CreateExpense } from '@server/sharedTypes.ts';
 
 const client = hc<ApiRoutes>('/'); // we add "/" because we have modified it in vite proxy so they are on the same origin
 
@@ -35,3 +36,17 @@ export const getAllExpensesQueryOptions = queryOptions({
 	queryFn: getAllExpenses,
 	staleTime: 1000 * 60 * 5, // 5 minutes
 });
+
+export async function createExpense({ value }: { value: CreateExpense }) {
+	await new Promise((resolve) => setTimeout(resolve, 3000));
+
+	// create a new expense
+	const res = await api.expenses.$post({ json: value });
+	if (!res.ok) {
+		throw new Error('Server error');
+	}
+
+	// newly created expense object
+	const newExpense = await res.json();
+	return newExpense;
+}
