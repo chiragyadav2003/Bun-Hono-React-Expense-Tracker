@@ -56,3 +56,16 @@ export const loadingCreateExpenseQueryOptions = queryOptions<{ expense?: CreateE
 	},
 	staleTime: Infinity,
 });
+
+export async function deleteExpense({ id }: { id: number }) {
+	await new Promise((resolve) => setTimeout(resolve, 4000)); // simulate a slow network request
+	const res = await api
+		.expenses[':id{[0-9]+}']
+		.$delete({ param: { id: String(id) } });
+
+	if (!res.ok) {
+		throw new Error('Server error');
+	}
+
+	return true;
+}
