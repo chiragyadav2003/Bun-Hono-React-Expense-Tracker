@@ -1,4 +1,4 @@
-import { getAllExpensesQueryOptions } from '@/lib/api';
+import { getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import {
@@ -20,15 +20,12 @@ function Expenses() {
 	const { isPending, data, error } = useQuery(getAllExpensesQueryOptions);
 
 	//handle loading state for create expense using the query key ['get-all-expenses'] which we've created in create-expense.tsx
-	const { data: loadingCreateExpense } = useQuery({
-		queryKey: ['loading-create-expense'],
-	})
+	const { data: loadingCreateExpense } = useQuery(loadingCreateExpenseQueryOptions)
 
 	if (error) return 'An error has occured : ' + error.message;
 
 	return (
 		<div className="p-2 max-w-3xl m-auto">
-			{JSON.stringify(loadingCreateExpense)}
 			<Table>
 				<TableCaption>A list of all your recent expenses.</TableCaption>
 				<TableHeader>
@@ -40,6 +37,18 @@ function Expenses() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
+					{
+						loadingCreateExpense?.expense && (
+							<TableRow>
+								<TableCell className="font-medium">
+									<Skeleton className="h-4" />
+								</TableCell>
+								<TableCell><Skeleton className="h-4" /></TableCell>
+								<TableCell><Skeleton className="h-4" /></TableCell>
+								<TableCell><Skeleton className="h-4" /></TableCell>
+							</TableRow>
+						)
+					}
 					{isPending
 						? Array(3)
 							.fill(0)

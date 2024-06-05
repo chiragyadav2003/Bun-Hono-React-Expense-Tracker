@@ -38,8 +38,6 @@ export const getAllExpensesQueryOptions = queryOptions({
 });
 
 export async function createExpense({ value }: { value: CreateExpense }) {
-	await new Promise((resolve) => setTimeout(resolve, 3000));
-
 	// create a new expense
 	const res = await api.expenses.$post({ json: value });
 	if (!res.ok) {
@@ -50,3 +48,11 @@ export async function createExpense({ value }: { value: CreateExpense }) {
 	const newExpense = await res.json();
 	return newExpense;
 }
+
+export const loadingCreateExpenseQueryOptions = queryOptions<{ expense?: CreateExpense }>({
+	queryKey: ['loading-create-expense'],
+	queryFn: async () => {
+		return {};
+	},
+	staleTime: Infinity,
+});

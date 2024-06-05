@@ -6,8 +6,9 @@ import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { Calendar } from '@/components/ui/calendar';
 import { useQueryClient } from '@tanstack/react-query';
-import { createExpense, getAllExpensesQueryOptions } from '@/lib/api';
+import { createExpense, getAllExpensesQueryOptions, loadingCreateExpenseQueryOptions } from '@/lib/api';
 import { createExpenseSchema } from '@server/sharedTypes.ts';
+import { toast } from 'sonner';
 
 export const Route = createFileRoute('/_authenticated/create-expense')({
 	component: CreateExpenses,
@@ -33,13 +34,11 @@ function CreateExpenses() {
 			// navigate to the expenses page after getting the existing expenses and before creating a new one as we will show loading while creating a new expense and show messages as per the response
 			navigate({ to: '/expenses' });
 
-			//loading state - we can send this data to any other page to show loading state
-			queryClient.setQueryData(['loading-create-expense'], { expense: value })
+			//loading state - we can send this data to any other page to show loading state for queryKey ['get-all-expenses']
+			queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, { expense: value })
 
 
 			try {
-				//success state
-
 				// create a new expense
 				const newExpense = await createExpense({ value });
 				// set the new expense object in the cache so that it can be used in other components without refetching it using setQueryData
@@ -47,16 +46,18 @@ function CreateExpenses() {
 					...existingExpenses,
 					expenses: [newExpense, ...existingExpenses.expenses],
 				});
+
+				toast.success('Congratulations', {
+					description: `Expense with title ${newExpense.title} has been created successfully - ✅`
+				});
 			} catch (error) {
-				//error state
+				toast.error('Somtthing went wrong', {
+					description: `Error occured while creating expense - ❌}`
+				});
 			} finally {
 				// remove the loading state
-				queryClient.setQueryData(['loading-create-expense'], {})
+				queryClient.setQueryData(loadingCreateExpenseQueryOptions.queryKey, {})
 			}
-
-
-
-
 		},
 	});
 
