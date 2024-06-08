@@ -1,3 +1,17 @@
 name = "hono-bun-expense-api"
 main = "./server/app.ts"          # init w/ TypeScript
 compatibility_date = "2024-05-24"
+
+[vars]
+KINDE_CLIENT_ID = 'KINDE_CLIENT_ID'
+KINDE_CLIENT_SECRET = 'KINDE_CLIENT_SECRET'
+KINDE_REDIRECT_URI = 'KINDE_REDIRECT_URI'
+KINDE_LOGOUT_REDIRECT_URI = 'KINDE_LOGOUT_REDIRECT_URI'
+
+# bun i @kinde-oss/kinde-typescript-sdk - init kinde auth using ts
+
+DATABASE_URL = 'DATABASE_URL'
+DB_HOST = 'DB_HOST'
+DB_USER = 'DB_USER'
+DB_PASSWORD = 'DB_PASSWORD'
+DB_NAME = 'DB_NAME'
